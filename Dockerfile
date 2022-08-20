@@ -13,7 +13,7 @@ RUN /bin/bash -c 'useradd -m -s /bin/bash -G wheel ${USER}; echo "${USER}:root" 
 # Configs
 COPY ./wsl.conf /etc/wsl.conf
 RUN echo "default=${USER}" >> /etc/wsl.conf
-RUN echo "permit nopass :wheel" >> /etc/doas.conf;'
+RUN echo "permit nopass :wheel" >> /etc/doas.conf
 
 COPY --chown=${USER}:${USER} post-install.sh /home/${USER}/post-install.sh
 RUN chmod +x /home/${USER}/post-install.sh
