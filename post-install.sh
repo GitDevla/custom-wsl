@@ -1,4 +1,6 @@
 #!/bin/bash
+((EUID != 0)) && echo "Script needs root privileges to run" && exec sudo -- "$0" "$@"
+
 pacman-key --init
 pacman-key --populate
 

@@ -1,6 +1,6 @@
 FROM archlinux:base
 
-ARG USER  
+ARG USER=devla
 
 # Install packages
 RUN pacman -Sy \ 
@@ -22,9 +22,15 @@ RUN curl -L -O "https://raw.githubusercontent.com/nullpo-head/wsl-distrod/main/i
 RUN useradd -m -s /bin/bash -G wheel ${USER}; echo "${USER}:root" | chpasswd
 
 # Configs
-COPY ./wsl.conf /etc/wsl.conf
+COPY config/config.sh config.sh
+RUN chmod +x ./config.sh \
+ && ./config.sh \ 
+ && rm ./config.sh
+
+RUN echo "permit nopass :wheel" > /etc/doas.conf
+
+COPY config/wsl.conf /etc/wsl.conf
 RUN echo "default=${USER}" >> /etc/wsl.conf
-RUN echo "permit nopass :wheel" >> /etc/doas.conf
 
 COPY --chown=${USER}:${USER} post-install.sh /home/${USER}/post-install.sh
 RUN chmod +x /home/${USER}/post-install.sh
